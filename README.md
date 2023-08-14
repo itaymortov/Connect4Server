@@ -1,6 +1,6 @@
 # Connect4Server
 
-Connect4Server is a ASP.NET server implementation for playing the classic game of Connect Four (also known as Four in a Row) over a network. This project provides a server that allows multiple clients to connect and play the game with each other.
+Connect4Server is a ASP.NET server implementation for playing the classic game of Connect Four (also known as Four in a Row) over a network. This project provides a site to the games and queries as well as a server database to store the data. you communicate with the client via wep API with HTTP requests.
 
 ## Features
 
