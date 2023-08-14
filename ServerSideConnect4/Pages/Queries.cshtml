@@ -1,0 +1,368 @@
+﻿@page
+@model ServerSideConnect4.Pages.QueriesModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center">
+    <h4 class="display-10">Showing all the players with all the details, with the option to sort by name without sensitive case</h4>
+</div>
+
+<p class="d-inline-flex">
+
+    <form method="post" asp-page-handler="SortOrder">
+        <a class="btn btn-primary" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="true" aria-controls="collapseExample">
+            Show players details
+        </a>
+        <button class="btn btn-primary" type="submit" name="SortOrder" value="id_asc">Sort by ID Ascending</button>
+        <button class="btn btn-primary" type="submit" name="SortOrder" value="id_desc">Sort by ID Descending</button>
+    </form>
+
+
+</p>
+<div class="collapse show" id="collapseExample">
+    <div class="card card-body">
+        @if (Model?.Player != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Player[0].ID)
+                        </th>
+                        <th>
+                            First Name
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Player[0].Phone)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Player[0].Country)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Player)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Phone)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Country)
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+            }
+            </div>
+</div>
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10">All player's names with their date of last game </h4>
+</div>
+
+<p class="d-inline-flex gap-1 mt-3">
+    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#contentCollapse" aria-expanded="false" aria-controls="contentCollapse">
+        Show table
+    </button>
+</p>
+
+<div class="collapse show" id="contentCollapse">
+    <div class="card card-body">
+        @if (Model?.LastGamesDate != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Player First Name</th>
+                        <th>Last Game Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.LastGamesDate)
+                    {
+                        <tr>
+                            <td>@Html.DisplayFor(modelItem => item.PlayerName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.BeginningGameDate)</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10">All games details</h4>
+</div>
+
+<div class="collapse show" id="collapseGames">
+    <div class="card card-body">
+        @if (Model?.AllGames != null)
+        {
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Game ID</th>
+                        <th>Player ID</th>
+                        <th>Player first name</th>
+                        <th>Date of game</th>
+                        <th>Game duration</th>
+                        <th>Winner</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.AllGames)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.ID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlayerID)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.PlayerName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.BeginningGameDate)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TimeDurationGame)
+                            </td>
+                            @if (item.isPlayerWin)
+                            {
+                                <td>Player</td>
+                            } else {
+                            <td>Computer</td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10"> Select a player to show all the games </h4>
+</div>
+
+<form method="post" asp-page-handler="SelectedPlayer">
+    @Html.AntiForgeryToken()
+    <select id="playersCombo" class="form-select" asp-items="@Model.players" asp-for="@Model.selectPlayers" onchange="this.form.submit();">
+        <option selected disabled value="">Choose...</option>
+    </select>
+</form>
+
+<div class="card card-body">
+    @if (Model?.AllSelectedPlayerGames != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Game ID</th>
+                    <th>Player ID</th>
+                    <th>Player first name</th>
+                    <th>Date of game</th>
+                    <th>Game duration</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AllSelectedPlayerGames)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlayerID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlayerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BeginningGameDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.TimeDurationGame)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+@if (!string.IsNullOrEmpty(Request.Query["playerName"]))
+{
+    var playerName = Request.Query["playerName"];
+    var playerGames = Model.GetGamesPlayedByPlayerID(playerName + "");
+
+    if (playerGames.Any())
+    {
+        <h3>Games played by @playerName:</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Player Name</th>
+                    <th>Player ID</th>
+                    <th>Time Duration</th>
+                    <th>Beginning Game Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var game in playerGames)
+                {
+                    <tr>
+                        <td>@game.PlayerName</td>
+                        <td>@game.PlayerID</td>
+                        <td>@game.TimeDurationGame</td>
+                        <td>@game.BeginningGameDate</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+    else
+    {
+        <p>No games found for @playerName.</p>
+    }
+}
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10">All player's names with their count of played games </h4>
+</div>
+
+<div class="card card-body">
+    @if (Model?.PlayerGamesCount != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Player first name</th>
+                    <th>Amount of games</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.PlayerGamesCount)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.PlayerName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GamesPlayed)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10">Select country to show all players that attach </h4>
+</div>
+
+<form method="post" asp-page-handler="SelectedCountry">
+    @Html.AntiForgeryToken()
+    <select id="playersCombo" class="form-select" asp-items="@Model.countries" asp-for="@Model.selectCountry" onchange="this.form.submit();">
+        <option selected disabled value="">Choose...</option>
+    </select>
+</form>
+
+<div class="card card-body">
+    @if (Model?.AllSelectedPlayerCountry != null)
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Player[0].ID)
+                    </th>
+                    <th>
+                        First Name
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Player[0].Phone)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Player[0].Country)
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.AllSelectedPlayerCountry)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.FirstName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Country)
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+
+<hr class="hr" />
+<div class="text-center">
+    <h4 class="display-10"> All players groups into amount of played </h4>
+</div>
+
+@foreach (var playersTable in Model.playersByAmountOfGames)
+{
+    <h4>Players who played @playersTable.GamesPlayed times:</h4>
+    <div class="card">
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Phone</th>
+                        <th>Country</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var player in playersTable.Players)
+                    {
+                        <tr>
+                            <td>@player.ID</td>
+                            <td>@player.FirstName</td>
+                            <td>@player.Phone</td>
+                            <td>@player.Country</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+}

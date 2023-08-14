@@ -1,0 +1,48 @@
+﻿@page
+@model ServerSideConnect4.Pages.Game.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>GameData</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameData.PlayerID)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameData.PlayerID)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameData.PlayerName)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameData.PlayerName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameData.BeginningGameDate)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameData.BeginningGameDate)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameData.TimeDurationGame)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameData.TimeDurationGame)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.GameData.isPlayerWin)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.GameData.isPlayerWin)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
